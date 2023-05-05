@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Demo jQuery - jQueryUI - CouchDB</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  </head>
+  <body>
+    
+      <h3>datos:</h3>
+      <div id="pestanias">
+        
+        <div id="t1">
+          <p id="mensajeFinal"></p>
+          <button type="submit">all información</button>
+        </div>
+
+
+        <div id="t1">
+            <p id="mensajeFinal"></p>
+            <input type="text" name="" id="#canton">
+            <button type="submit">buscar por cantón</button>
+          </div>
+
+
+          <div id="t1">
+            <p id="mensajeFinal"></p>
+            <input type="text" name="" id="#limite">
+            <button type="submit">buscar por límite</button>
+          </div>
+      </div>
+
+      <div>
+
+        <table style="border:1px solid #000" id = "table">
+            <tr>
+                <td>Canton</td>
+                <td>Codigo_Canton</td>
+                <td>Codigo_Parroquia</td>
+                <td>Codigo_Provincia</td>
+                <td>Parroquia</td>
+                <td>Provincia</td>
+                <td>Zona_Administrativa</td>
+            </tr>
+        </table>
+      </div>
+  </body>
+  <script>
+    $(document).ready(function() {
+      $("#pestanias").tabs();
+      $( "button" ).click(function() {
+        $.ajax({
+              dataType: 'json',
+              url: "http://localhost:5984/instituciones/_design/primera/_view/vista001"
+              }).then(function(data) {
+                console.log(data);
+
+
+                console.log(data.rows[0].value)
+
+
+
+
+               for (let i ; i< data.rows.length; i++){
+
+                    let row = document.createElement("tr")
+
+                    for(let j; j< Object.keys(data.rows[i].value).length; j++){
+
+                        let col = document.createElement("td")
+                        col.innerText = data.rows[i].value[j]
+
+                        console.log(data.rows[i].values[j])
+
+                        row.appendChild(col)
+                        
+
+                    } 
+
+                    document.querySelector("#table").appendChild(row)
+
+                
+
+                }
+                
+                
+              });
+      });
+    });
+  </script>
+</html>
